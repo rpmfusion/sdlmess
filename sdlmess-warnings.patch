@@ -1,0 +1,11 @@
+--- makefile.sdl.warnings~	2008-03-27 13:19:35.000000000 +0100
++++ makefile.sdl	2008-03-27 13:19:54.000000000 +0100
+@@ -332,7 +332,7 @@
+ ifneq ($(OPTIMIZE),0)
+ CFLAGS += $(ARCHOPTS) -fno-strict-aliasing
+ ifneq ($(TARGETOS),os2)
+-CFLAGS += -Werror
++#CFLAGS += -Werror
+ endif
+ endif
+ 
