@@ -6,7 +6,7 @@
 %endif
 
 Name:           sdlmess
-Version:        0125
+Version:        0126
 Release:        1%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
@@ -105,7 +105,7 @@ rm -f artwork/dir.txt
 
 
 %build
-make %{?arch_flags} DEBUG=1 DEBUGGER=1 SYMBOLS=1 \
+make %{?arch_flags} DEBUG=1 SYMBOLS=1 \
     OPT_FLAGS='%{optflags} -DINI_PATH="\"%{_sysconfdir}/mess;\""' -f makefile.sdl
 make %{?arch_flags} \
     OPT_FLAGS='%{optflags} -DINI_PATH="\"%{_sysconfdir}/mess;\""' -f makefile.sdl
@@ -189,6 +189,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jul 11 2008 Julian Sikorski <belegdol[at]gmail[dot]com> - 0126-1
+- Updated to 0.126
+- Dropped DEBUGGER=1, it is default now
+
 * Fri May 16 2008 Julian Sikorski <belegdol[at]gmail[dot]com> - 0125-1
 - Updated to 0.125
 - Dropped %%{?dist} from %%changelog
