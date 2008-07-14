@@ -1,7 +1,7 @@
---- makefile.sdl~	2007-08-14 17:25:18.000000000 +0200
-+++ makefile.sdl	2007-08-31 01:41:46.000000000 +0200
-@@ -99,10 +99,10 @@
- # PTR64 = 1
+--- makefile.sdl.expat~	2008-07-14 14:33:46.000000000 +0200
++++ makefile.sdl	2008-07-14 14:33:46.000000000 +0200
+@@ -125,10 +125,10 @@
+ # BIGENDIAN = 1
  
  # uncomment next line to build expat as part of MAME build
 -BUILD_EXPAT = 1
