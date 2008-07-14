@@ -4,10 +4,13 @@
 %ifarch ppc
 %define arch_flags BIGENDIAN=1
 %endif
+%ifarch ppc64
+%define arch_flags BIGENDIAN=1 PTR64=1
+%endif
 
 Name:           sdlmess
 Version:        0126
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
 Group:          Applications/Emulators
@@ -17,6 +20,7 @@ Source0:        http://rbelmont.mameworld.info/sdlmess%{version}.zip
 Source1:        %{name}-ctrlr.tgz
 Patch0:         %{name}-warnings.patch
 Patch1:         %{name}-expat.patch
+Patch2:         %{name}-bne.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  SDL-devel expat-devel zlib-devel libGL-devel gtk2-devel
@@ -59,6 +63,7 @@ Requires(hint): %{name}-debuginfo = %{version}-%{release}
 %setup -qn %{name}%{version}
 %patch0 -p0 -b .warnings~
 %patch1 -p0 -b .expat~
+%patch2 -p0 -b .bne~
 
 # Create mess.ini file
 cat > mess.ini << EOF
@@ -189,6 +194,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jul 14 2008 Julian Sikorski <belegdol[at]gmail[dot]com> - 0126-2
+- Added ppc64 arch_flags
+- Patched bne-- inline assembly to allow ppc64 build
+- Updated the expat patch to make new rpm happy
+
 * Mon Jul 11 2008 Julian Sikorski <belegdol[at]gmail[dot]com> - 0126-1
 - Updated to 0.126
 - Dropped DEBUGGER=1, it is default now
