@@ -10,7 +10,7 @@
 
 Name:           sdlmess
 Version:        0126
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
 Group:          Applications/Emulators
@@ -194,6 +194,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jul 30 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info - 0126-3
+- rebuild for buildsys cflags issue
+
 * Mon Jul 14 2008 Julian Sikorski <belegdol[at]gmail[dot]com> - 0126-2
 - Added ppc64 arch_flags
 - Patched bne-- inline assembly to allow ppc64 build
