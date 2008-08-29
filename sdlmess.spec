@@ -9,8 +9,8 @@
 %endif
 
 Name:           sdlmess
-Version:        0126
-Release:        3%{?dist}
+Version:        0127
+Release:        1%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
 Group:          Applications/Emulators
@@ -74,7 +74,7 @@ ctrlrpath               %{_datadir}/mess/ctrlr
 fontpath                %{_datadir}/mess/fonts
 hashpath                %{_datadir}/mess/hash
 samplepath              %{_datadir}/mess/samples
-cheat_file              %{_datadir}/mess/cheat.dat
+cheatpath               %{_datadir}/mess/cheats
 
 # Allow user to override ini settings
 inipath                 \$HOME/.mess/ini;%{_sysconfdir}/mess
@@ -128,6 +128,7 @@ install -d $RPM_BUILD_ROOT%{_datadir}/mess/fonts
 install -d $RPM_BUILD_ROOT%{_datadir}/mess/hash
 install -d $RPM_BUILD_ROOT%{_datadir}/mess/samples
 install -d $RPM_BUILD_ROOT%{_datadir}/mess/software
+install -d $RPM_BUILD_ROOT%{_datadir}/mess/cheats
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/mess
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/skel/.mess/cfg
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/skel/.mess/comments
@@ -172,6 +173,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/mess/hash
 %dir %{_datadir}/mess/samples
 %dir %{_datadir}/mess/software
+%dir %{_datadir}/mess/cheats
 %{_sysconfdir}/skel/.mess
 
 %files tools
@@ -194,6 +196,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Aug 29 2008 Julian Sikorski <belegdol[at]gmail[dot]com> - 0127-1
+- Updated to 0.127
+- Dropped cheat_file and added cheatpath to the default ini
+
 * Wed Jul 30 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info - 0126-3
 - rebuild for buildsys cflags issue
 
