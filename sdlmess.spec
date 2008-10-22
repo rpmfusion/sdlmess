@@ -9,7 +9,7 @@
 %endif
 
 Name:           sdlmess
-Version:        0127
+Version:        0128
 Release:        1%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
@@ -17,13 +17,13 @@ Group:          Applications/Emulators
 License:        MAME License
 URL:            http://rbelmont.mameworld.info/?page_id=163
 Source0:        http://rbelmont.mameworld.info/sdlmess%{version}.zip
-Source1:        %{name}-ctrlr.tgz
+Source1:        ctrlr.rar
 Patch0:         %{name}-warnings.patch
 Patch1:         %{name}-expat.patch
 Patch2:         %{name}-bne.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  SDL-devel expat-devel zlib-devel libGL-devel gtk2-devel
+BuildRequires:  SDL-devel expat-devel zlib-devel libGL-devel gtk2-devel unrar
 BuildRequires:  GConf2-devel
 
 %description
@@ -53,7 +53,6 @@ Requires:       %{name} = %{version}-%{release}
 %package debug
 Summary:        Debug enabled version of sdlmess
 Group:          Applications/Emulators
-Requires(hint): %{name}-debuginfo = %{version}-%{release}
 
 %description debug
 %{summary}.
@@ -110,9 +109,9 @@ rm -f artwork/dir.txt
 
 
 %build
-make %{?arch_flags} DEBUG=1 SYMBOLS=1 \
+make %{?_smp_mflags} %{?arch_flags} DEBUG=1 SYMBOLS=1 \
     OPT_FLAGS='%{optflags} -DINI_PATH="\"%{_sysconfdir}/mess;\""' -f makefile.sdl
-make %{?arch_flags} \
+make %{?_smp_mflags} %{?arch_flags} \
     OPT_FLAGS='%{optflags} -DINI_PATH="\"%{_sysconfdir}/mess;\""' -f makefile.sdl
 
 
@@ -151,8 +150,7 @@ install -pm 644 mess.ini $RPM_BUILD_ROOT%{_sysconfdir}/mess
 install -pm 644 %{SOURCE1} .
 
 # Install controller files
-tar --extract --directory $RPM_BUILD_ROOT%{_datadir}/mess/ctrlr \
-    --file %{SOURCE1}
+unrar x %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/mess
 
 
 %clean
@@ -196,6 +194,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Oct 22 2008 Julian Sikorski <belegdol[at]gmail[dot]com> - 0128-1
+- Updated to 0.128
+- Switched to the ctrlr files from http://www.kutek.net/mame32_config_files.php
+- The -debug subpackage no longer depends on -debuginfo
+- Added %%{?_smp_mflags} once again
+
 * Fri Aug 29 2008 Julian Sikorski <belegdol[at]gmail[dot]com> - 0127-1
 - Updated to 0.127
 - Dropped cheat_file and added cheatpath to the default ini
