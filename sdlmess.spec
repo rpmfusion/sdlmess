@@ -9,7 +9,7 @@
 %endif
 
 Name:           sdlmess
-Version:        0128
+Version:        0129
 Release:        1%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
@@ -18,9 +18,12 @@ License:        MAME License
 URL:            http://rbelmont.mameworld.info/?page_id=163
 Source0:        http://rbelmont.mameworld.info/sdlmess%{version}.zip
 Source1:        ctrlr.rar
+#ui.bdc generated from ui.bdf
+Source2:        ui.bdc
 Patch0:         %{name}-warnings.patch
 Patch1:         %{name}-expat.patch
 Patch2:         %{name}-bne.patch
+Patch3:         %{name}-fortify.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  SDL-devel expat-devel zlib-devel libGL-devel gtk2-devel unrar
@@ -63,6 +66,7 @@ Group:          Applications/Emulators
 %patch0 -p0 -b .warnings~
 %patch1 -p0 -b .expat~
 %patch2 -p0 -b .bne~
+%patch3 -p0 -b .fortify
 
 # Create mess.ini file
 cat > mess.ini << EOF
@@ -109,9 +113,9 @@ rm -f artwork/dir.txt
 
 
 %build
-make %{?_smp_mflags} %{?arch_flags} DEBUG=1 SYMBOLS=1 \
+make %{?_smp_mflags} %{?arch_flags} DEBUG=1 SYMBOLS=1 OPTIMIZE=2\
     OPT_FLAGS='%{optflags} -DINI_PATH="\"%{_sysconfdir}/mess;\""' -f makefile.sdl
-make %{?_smp_mflags} %{?arch_flags} \
+make %{?_smp_mflags} %{?arch_flags} SYMBOLS=1 OPTIMIZE=2\
     OPT_FLAGS='%{optflags} -DINI_PATH="\"%{_sysconfdir}/mess;\""' -f makefile.sdl
 
 
@@ -145,6 +149,7 @@ install -pm 755 messd $RPM_BUILD_ROOT%{_bindir}/messd
 install -pm 755 imgtool messtest $RPM_BUILD_ROOT%{_bindir}
 install -pm 644 sysinfo.dat $RPM_BUILD_ROOT%{_datadir}/mess
 install -pm 644 artwork/* $RPM_BUILD_ROOT%{_datadir}/mess/artwork
+install -pm 644 ui.bdf %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/mess/fonts
 install -pm 644 hash/* $RPM_BUILD_ROOT%{_datadir}/mess/hash
 install -pm 644 mess.ini $RPM_BUILD_ROOT%{_sysconfdir}/mess
 install -pm 644 %{SOURCE1} .
@@ -167,7 +172,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/mess/artwork
 %dir %{_datadir}/mess/roms
 %dir %{_datadir}/mess/ctrlr
-%dir %{_datadir}/mess/fonts
+%{_datadir}/mess/fonts
 %dir %{_datadir}/mess/hash
 %dir %{_datadir}/mess/samples
 %dir %{_datadir}/mess/software
@@ -194,6 +199,13 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jan  7 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0129-1
+- Updated to 0.129
+- Added patch disabling undefining _FORTIFY_SOURCE
+- Enabled symbols in all builds
+- Added OPTIMIZE=2 to all builds since makefile seems to override OPT_FLAGS
+- Install ui.bdf and pre-generated ui.bdc to %%{_datadir}/mess/fonts
+
 * Wed Oct 22 2008 Julian Sikorski <belegdol[at]gmail[dot]com> - 0128-1
 - Updated to 0.128
 - Switched to the ctrlr files from http://www.kutek.net/mame32_config_files.php
