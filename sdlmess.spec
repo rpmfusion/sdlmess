@@ -9,7 +9,7 @@
 %endif
 
 Name:           sdlmess
-Version:        0129
+Version:        0130
 Release:        1%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
@@ -28,6 +28,9 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  SDL-devel expat-devel zlib-devel libGL-devel gtk2-devel unrar
 BuildRequires:  GConf2-devel
+%if 0%{?fedora} == 10
+BuildRequires:  dbus-devel
+%endif
 
 %description
 MESS is an acronym that stands for Multiple Emulator Super System.  MESS will
@@ -120,46 +123,46 @@ make %{?_smp_mflags} %{?arch_flags} SYMBOLS=1 OPTIMIZE=2\
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 # Create directories
-install -d $RPM_BUILD_ROOT%{_bindir}
-install -d $RPM_BUILD_ROOT%{_datadir}/mess/artwork
-install -d $RPM_BUILD_ROOT%{_datadir}/mess/roms
-install -d $RPM_BUILD_ROOT%{_datadir}/mess/ctrlr
-install -d $RPM_BUILD_ROOT%{_datadir}/mess/fonts
-install -d $RPM_BUILD_ROOT%{_datadir}/mess/hash
-install -d $RPM_BUILD_ROOT%{_datadir}/mess/samples
-install -d $RPM_BUILD_ROOT%{_datadir}/mess/software
-install -d $RPM_BUILD_ROOT%{_datadir}/mess/cheats
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/mess
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/skel/.mess/cfg
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/skel/.mess/comments
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/skel/.mess/diff
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/skel/.mess/ini
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/skel/.mess/inp
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/skel/.mess/memcard
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/skel/.mess/nvram
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/skel/.mess/sta
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/skel/.mess/snap
+install -d %{buildroot}%{_bindir}
+install -d %{buildroot}%{_datadir}/mess/artwork
+install -d %{buildroot}%{_datadir}/mess/roms
+install -d %{buildroot}%{_datadir}/mess/ctrlr
+install -d %{buildroot}%{_datadir}/mess/fonts
+install -d %{buildroot}%{_datadir}/mess/hash
+install -d %{buildroot}%{_datadir}/mess/samples
+install -d %{buildroot}%{_datadir}/mess/software
+install -d %{buildroot}%{_datadir}/mess/cheats
+install -d %{buildroot}%{_sysconfdir}/mess
+install -d %{buildroot}%{_sysconfdir}/skel/.mess/cfg
+install -d %{buildroot}%{_sysconfdir}/skel/.mess/comments
+install -d %{buildroot}%{_sysconfdir}/skel/.mess/diff
+install -d %{buildroot}%{_sysconfdir}/skel/.mess/ini
+install -d %{buildroot}%{_sysconfdir}/skel/.mess/inp
+install -d %{buildroot}%{_sysconfdir}/skel/.mess/memcard
+install -d %{buildroot}%{_sysconfdir}/skel/.mess/nvram
+install -d %{buildroot}%{_sysconfdir}/skel/.mess/sta
+install -d %{buildroot}%{_sysconfdir}/skel/.mess/snap
 
 # Install binaries and config files
-install -pm 755 mess $RPM_BUILD_ROOT%{_bindir}/mess
-install -pm 755 messd $RPM_BUILD_ROOT%{_bindir}/messd
-install -pm 755 imgtool messtest $RPM_BUILD_ROOT%{_bindir}
-install -pm 644 sysinfo.dat $RPM_BUILD_ROOT%{_datadir}/mess
-install -pm 644 artwork/* $RPM_BUILD_ROOT%{_datadir}/mess/artwork
-install -pm 644 ui.bdf %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/mess/fonts
-install -pm 644 hash/* $RPM_BUILD_ROOT%{_datadir}/mess/hash
-install -pm 644 mess.ini $RPM_BUILD_ROOT%{_sysconfdir}/mess
+install -pm 755 mess %{buildroot}%{_bindir}/mess
+install -pm 755 messd %{buildroot}%{_bindir}/messd
+install -pm 755 imgtool messtest %{buildroot}%{_bindir}
+install -pm 644 sysinfo.dat %{buildroot}%{_datadir}/mess
+install -pm 644 artwork/* %{buildroot}%{_datadir}/mess/artwork
+install -pm 644 ui.bdf %{SOURCE2} %{buildroot}%{_datadir}/mess/fonts
+install -pm 644 hash/* %{buildroot}%{_datadir}/mess/hash
+install -pm 644 mess.ini %{buildroot}%{_sysconfdir}/mess
 install -pm 644 %{SOURCE1} .
 
 # Install controller files
-unrar x %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/mess
+unrar x %{SOURCE1} %{buildroot}%{_datadir}/mess
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 
 %files
@@ -199,6 +202,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Mar 13 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0130-1
+- Updated to 0.130
+- Use macros consistently
+- Worked around broken Fedora 10 pkgconfig
+- Updated the warnings patch
+
 * Wed Jan  7 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0129-1
 - Updated to 0.129
 - Added patch disabling undefining _FORTIFY_SOURCE
