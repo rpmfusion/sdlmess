@@ -10,7 +10,7 @@
 
 Name:           sdlmess
 Version:        0130
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
 Group:          Applications/Emulators
@@ -202,6 +202,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0130-2
+- rebuild for new F11 features
+
 * Fri Mar 13 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0130-1
 - Updated to 0.130
 - Use macros consistently
