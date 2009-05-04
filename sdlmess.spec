@@ -9,8 +9,8 @@
 %endif
 
 Name:           sdlmess
-Version:        0130
-Release:        2%{?dist}
+Version:        0131
+Release:        1%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
 Group:          Applications/Emulators
@@ -22,7 +22,6 @@ Source1:        ctrlr.rar
 Source2:        ui.bdc
 Patch0:         %{name}-warnings.patch
 Patch1:         %{name}-expat.patch
-Patch2:         %{name}-bne.patch
 Patch3:         %{name}-fortify.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -68,7 +67,6 @@ Group:          Applications/Emulators
 %setup -qn %{name}%{version}
 %patch0 -p0 -b .warnings~
 %patch1 -p0 -b .expat~
-%patch2 -p0 -b .bne~
 %patch3 -p0 -b .fortify
 
 # Create mess.ini file
@@ -149,7 +147,7 @@ install -d %{buildroot}%{_sysconfdir}/skel/.mess/snap
 # Install binaries and config files
 install -pm 755 mess %{buildroot}%{_bindir}/mess
 install -pm 755 messd %{buildroot}%{_bindir}/messd
-install -pm 755 imgtool messtest %{buildroot}%{_bindir}
+install -pm 755 castool imgtool messtest %{buildroot}%{_bindir}
 install -pm 644 sysinfo.dat %{buildroot}%{_datadir}/mess
 install -pm 644 artwork/* %{buildroot}%{_datadir}/mess/artwork
 install -pm 644 ui.bdf %{SOURCE2} %{buildroot}%{_datadir}/mess/fonts
@@ -185,6 +183,7 @@ rm -rf %{buildroot}
 %files tools
 %defattr(-,root,root,-)
 %doc imgtool.txt
+%{_bindir}/castool
 %{_bindir}/imgtool
 %{_bindir}/messtest
 
@@ -202,6 +201,11 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon May 04 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0131-1
+- Updated to 0.131
+- Added castool to the -tools package
+- Dropped the upstreamed bne patch
+
 * Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0130-2
 - rebuild for new F11 features
 
