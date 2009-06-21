@@ -9,7 +9,7 @@
 %endif
 
 Name:           sdlmess
-Version:        0131
+Version:        0132
 Release:        1%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
@@ -98,19 +98,20 @@ video                   opengl
 joystick                1
 EOF
 
-# Fix end-of-line encoding
-rm -fr docs/win*
-find docs -type f -exec sed -i 's/\r//' {} \;
-mv docs/imgtool.txt .
-
-#Fix newvideo.txt encoding
+# Fix newvideo.txt encoding
 pushd docs
 /usr/bin/iconv -f cp1250 -t utf-8 newvideo.txt > newvideo.txt.conv
 /bin/mv -f newvideo.txt.conv newvideo.txt
 popd
 
-# remove extraneous file in installed artwork
+# Remove extraneous file in installed artwork
 rm -f artwork/dir.txt
+
+# Remove windows-specific documentation
+rm -fr docs/win*
+
+# Move the imgtool documentation to the top dir for better visibility
+mv docs/imgtool.txt .
 
 
 %build
@@ -201,6 +202,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sun Jun 21 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0132-1
+- Updated to 0.132
+- Dropped the no longer necessary line ending fixes
+
 * Mon May 04 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0131-1
 - Updated to 0.131
 - Added castool to the -tools package
