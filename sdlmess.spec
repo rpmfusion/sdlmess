@@ -9,7 +9,7 @@
 %endif
 
 Name:           sdlmess
-Version:        0132
+Version:        0133
 Release:        1%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
@@ -51,6 +51,8 @@ Requires:       %{name} = %{version}-%{release}
 Summary:        Data files used for the sdlmess package
 Group:          Applications/Emulators
 Requires:       %{name} = %{version}-%{release}
+
+BuildArch:      noarch
 
 %description data
 %{summary}.
@@ -202,6 +204,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jul 24 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0133-1
+- Updated to 0.133
+- Made the -data subpackage noarch
+
 * Sun Jun 21 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0132-1
 - Updated to 0.132
 - Dropped the no longer necessary line ending fixes
