@@ -1,3 +1,6 @@
+# the debug build is disabled by default, please use --with debug to override
+%bcond_with debug
+
 %ifarch x86_64
 %define arch_flags PTR64=1
 %endif
@@ -23,6 +26,7 @@ Source2:        ui.bdc
 Patch0:         %{name}-warnings.patch
 Patch1:         %{name}-expat.patch
 Patch3:         %{name}-fortify.patch
+Patch4:         %{name}-0134-nounidasm.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  SDL-devel expat-devel zlib-devel libGL-devel gtk2-devel unrar
@@ -57,19 +61,13 @@ BuildArch:      noarch
 %description data
 %{summary}.
 
-%package debug
-Summary:        Debug enabled version of sdlmess
-Group:          Applications/Emulators
-
-%description debug
-%{summary}.
-
 
 %prep
 %setup -qn %{name}%{version}
 %patch0 -p0 -b .warnings~
 %patch1 -p0 -b .expat~
 %patch3 -p0 -b .fortify
+%patch4 -p1 -b .nounidasm
 
 # Create mess.ini file
 cat > mess.ini << EOF
@@ -117,10 +115,13 @@ mv docs/imgtool.txt .
 
 
 %build
+%if %{with debug}
 make %{?_smp_mflags} %{?arch_flags} DEBUG=1 SYMBOLS=1 OPTIMIZE=2\
     OPT_FLAGS='%{optflags} -DINI_PATH="\"%{_sysconfdir}/mess;\""' -f makefile.sdl
+%else
 make %{?_smp_mflags} %{?arch_flags} SYMBOLS=1 OPTIMIZE=2\
     OPT_FLAGS='%{optflags} -DINI_PATH="\"%{_sysconfdir}/mess;\""' -f makefile.sdl
+%endif
 
 
 %install
@@ -148,8 +149,11 @@ install -d %{buildroot}%{_sysconfdir}/skel/.mess/sta
 install -d %{buildroot}%{_sysconfdir}/skel/.mess/snap
 
 # Install binaries and config files
-install -pm 755 mess %{buildroot}%{_bindir}/mess
+%if %{with debug}
 install -pm 755 messd %{buildroot}%{_bindir}/messd
+%else
+install -pm 755 mess %{buildroot}%{_bindir}/mess
+%endif
 install -pm 755 castool imgtool messtest %{buildroot}%{_bindir}
 install -pm 644 sysinfo.dat %{buildroot}%{_datadir}/mess
 install -pm 644 artwork/* %{buildroot}%{_datadir}/mess/artwork
@@ -171,7 +175,11 @@ rm -rf %{buildroot}
 %doc *.txt docs/*
 %config(noreplace) %{_sysconfdir}/mess/mess.ini
 %dir %{_sysconfdir}/mess
+%if %{with debug}
+%{_bindir}/messd
+%else
 %{_bindir}/mess
+%endif
 %dir %{_datadir}/mess
 %dir %{_datadir}/mess/artwork
 %dir %{_datadir}/mess/roms
@@ -197,16 +205,13 @@ rm -rf %{buildroot}
 %{_datadir}/mess/ctrlr/*
 %{_datadir}/mess/hash/*
 
-%files debug
-%defattr(-,root,root,-)
-%doc docs/license.txt
-%{_bindir}/messd
-
 
 %changelog
 * Thu Sep 17 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0134-1
 - Updated to 0.134
 - Updated the warnings patch
+- Made the -debug build optional
+- Disabled unidasm until MAME bug #3442 is fixed
 
 * Fri Jul 24 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0133-1
 - Updated to 0.133
