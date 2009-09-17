@@ -9,7 +9,7 @@
 %endif
 
 Name:           sdlmess
-Version:        0133
+Version:        0134
 Release:        1%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
@@ -204,6 +204,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Sep 17 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0134-1
+- Updated to 0.134
+- Updated the warnings patch
+
 * Fri Jul 24 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0133-1
 - Updated to 0.133
 - Made the -data subpackage noarch
