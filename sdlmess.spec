@@ -117,8 +117,8 @@ mv docs/imgtool.txt .
 
 
 %build
-make %{?_smp_mflags} %{?arch_flags} DEBUG=1 SYMBOLS=1 OPTIMIZE=2\
-    OPT_FLAGS='%{optflags} -DINI_PATH="\"%{_sysconfdir}/mess;\""' -f makefile.sdl
+#make %{?_smp_mflags} %{?arch_flags} DEBUG=1 SYMBOLS=1 OPTIMIZE=2\
+#    OPT_FLAGS='%{optflags} -DINI_PATH="\"%{_sysconfdir}/mess;\""' -f makefile.sdl
 make %{?_smp_mflags} %{?arch_flags} SYMBOLS=1 OPTIMIZE=2\
     OPT_FLAGS='%{optflags} -DINI_PATH="\"%{_sysconfdir}/mess;\""' -f makefile.sdl
 
@@ -149,7 +149,7 @@ install -d %{buildroot}%{_sysconfdir}/skel/.mess/snap
 
 # Install binaries and config files
 install -pm 755 mess %{buildroot}%{_bindir}/mess
-install -pm 755 messd %{buildroot}%{_bindir}/messd
+#install -pm 755 messd %{buildroot}%{_bindir}/messd
 install -pm 755 castool imgtool messtest %{buildroot}%{_bindir}
 install -pm 644 sysinfo.dat %{buildroot}%{_datadir}/mess
 install -pm 644 artwork/* %{buildroot}%{_datadir}/mess/artwork
@@ -197,10 +197,10 @@ rm -rf %{buildroot}
 %{_datadir}/mess/ctrlr/*
 %{_datadir}/mess/hash/*
 
-%files debug
-%defattr(-,root,root,-)
-%doc docs/license.txt
-%{_bindir}/messd
+#%files debug
+#%defattr(-,root,root,-)
+#%doc docs/license.txt
+#%{_bindir}/messd
 
 
 %changelog
