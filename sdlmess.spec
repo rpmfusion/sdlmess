@@ -1,24 +1,24 @@
 # the debug build is disabled by default, please use --with debug to override
 %bcond_with debug
 
-
 %ifarch x86_64
-%define arch_flags PTR64=1
+%global arch_flags PTR64=1
 %endif
 %ifarch ppc
-%define arch_flags BIGENDIAN=1
+%global arch_flags BIGENDIAN=1
 %endif
 %ifarch ppc64
-%define arch_flags BIGENDIAN=1 PTR64=1
+%global arch_flags BIGENDIAN=1 PTR64=1
 %endif
 
 Name:           sdlmess
-Version:        0134
+Version:        0135
 Release:        1%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
 Group:          Applications/Emulators
-License:        MAME License
+#Files in src/lib/util and src/osd (except src/osd/sdl) are BSD
+License:        MAME License and BSD
 URL:            http://rbelmont.mameworld.info/?page_id=163
 Source0:        http://rbelmont.mameworld.info/sdlmess%{version}.zip
 Source1:        ctrlr.rar
@@ -208,6 +208,11 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sun Nov 08 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0135-1
+- Updated to 0.135
+- Use %%global instead of %%define
+- Added BSD to the license tag
+
 * Thu Sep 17 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0134-1
 - Updated to 0.134
 - Updated the warnings patch
