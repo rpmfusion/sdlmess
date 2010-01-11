@@ -5,14 +5,14 @@
 %global arch_flags PTR64=1
 %endif
 %ifarch ppc
-%global arch_flags BIGENDIAN=1
+%global arch_flags powerpc=1 BIGENDIAN=1
 %endif
 %ifarch ppc64
-%global arch_flags BIGENDIAN=1 PTR64=1
+%global arch_flags powerpc=1 BIGENDIAN=1 PTR64=1
 %endif
 
 Name:           sdlmess
-Version:        0135
+Version:        0136
 Release:        1%{?dist}
 Summary:        SDL Multiple Emulator Super System
 
@@ -27,7 +27,6 @@ Source2:        ui.bdc
 Patch0:         %{name}-warnings.patch
 Patch1:         %{name}-expat.patch
 Patch3:         %{name}-fortify.patch
-Patch4:         %{name}-0134-nounidasm.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  SDL-devel expat-devel zlib-devel libGL-devel gtk2-devel unrar
@@ -68,7 +67,6 @@ BuildArch:      noarch
 %patch0 -p0 -b .warnings~
 %patch1 -p0 -b .expat~
 %patch3 -p0 -b .fortify
-%patch4 -p1 -b .nounidasm
 
 # Create mess.ini file
 cat > mess.ini << EOF
@@ -114,6 +112,11 @@ rm -fr docs/win*
 # Move the imgtool documentation to the top dir for better visibility
 mv docs/imgtool.txt .
 
+# Fix permissions
+chmod -x docs/license.txt docs/config.txt docs/mame.txt docs/faq.htm \
+    docs/credits.htm imgtool.txt
+find src/mess -type f \( -name \*.h -or -name \*.c \) -exec chmod -x {} \;
+
 
 %build
 %if %{with debug}
@@ -155,7 +158,7 @@ install -pm 755 messd %{buildroot}%{_bindir}/messd
 %else
 install -pm 755 mess %{buildroot}%{_bindir}/mess
 %endif
-install -pm 755 castool imgtool messtest %{buildroot}%{_bindir}
+install -pm 755 castool dat2html imgtool messtest %{buildroot}%{_bindir}
 install -pm 644 sysinfo.dat %{buildroot}%{_datadir}/mess
 install -pm 644 artwork/* %{buildroot}%{_datadir}/mess/artwork
 install -pm 644 ui.bdf %{SOURCE2} %{buildroot}%{_datadir}/mess/fonts
@@ -196,6 +199,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc imgtool.txt
 %{_bindir}/castool
+%{_bindir}/dat2html
 %{_bindir}/imgtool
 %{_bindir}/messtest
 
@@ -208,6 +212,11 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Jan 11 2010 Julian Sikorski <belegdol[at]gmail[dot]com> - 0136-1
+- Updated to 0.136
+- Added dat2html to the -tools subpackage
+- Dropped unidasm patch and solved the problem correctly
+
 * Sun Nov 08 2009 Julian Sikorski <belegdol[at]gmail[dot]com> - 0135-1
 - Updated to 0.135
 - Use %%global instead of %%define
